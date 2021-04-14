@@ -61,6 +61,7 @@ class Punto{
     }
 
     public void guardarEnDisco(String ruta){
+        /*
         FileOutputStream fos = new FileOutputStream(ruta);
         try {
             fos.write(someByteArray);
@@ -68,5 +69,6 @@ class Punto{
         finally {
             fos.close();
         }
+         */
     }
 }
