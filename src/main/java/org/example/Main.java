@@ -9,15 +9,58 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         String frase = SolicitarFrase();
-        Ejercicios tarea6 = new Ejercicios(frase);
-        tarea6.calcularLineas();
-        tarea6.numeroDePalabrasConUnSoloEspacio();
-        tarea6.numeroDePalabras();
-        tarea6.mostrarPalabras();
-        tarea6.numeroDeRepeticiones("asdf");
-        tarea6.convertirMallusculas();
-        tarea6.ordenarAlfabeticamente();
-        tarea6.ordenarAlfabeticamenteInvertido();
+        Ejercicios tarea = new Ejercicios(frase);
+        menu(tarea);
+    }
+
+
+    public static void menu(Ejercicios tarea) {
+        int opcion = imprimirMenu();
+        switch (opcion){
+            case 1: tarea.calcularLineas(); break;
+            case 2: tarea.numeroDePalabras(); break;
+            case 3: tarea.numeroDePalabrasSinValidar(); break;
+            case 4: tarea.numeroDePalabras(); break;
+            case 5: tarea.mostrarPalabras(); break;
+            case 6: tarea.numeroDeRepeticiones("asdf"); break;
+            case 7: tarea.convertirMallusculas(); break;
+        }
+
+        menu(tarea); //otra llamada recursiva
+    }
+
+    public static int imprimirMenu() {
+        StringBuilder output = new StringBuilder("--------- Menu de ejercicios ---------\n");
+        output.append("1. Mostrar numero de lineas\n");
+        output.append("2. Mostrar numero de palabras (con espacios)\n");
+        output.append("3. Mostrar nuemro de palabras (sin espacios)\n");
+        output.append("4. Mostrar palabras individuales\n");
+        output.append("5. Mostrar repeticiones de una palabra\n");
+        output.append("6. Mostrar palabras capitalizadas\n");
+        output.append("7. Mostar palabras en order alfabetico y alfabetico invertido\n");
+        output.append("8. Comprobar si la frase contiene una fecha\n");
+        output.append("9. Comprobar si la frase tiene una matricula\n");
+        output.append("10. Comprobar si la frase tiene un email\n");
+        output.append("--------- --------- ---------\n");
+        System.out.println(output);
+
+        Scanner in = new Scanner(System.in);
+        int seleccion = 0;
+        try {
+            seleccion = in.nextInt();
+            if (seleccion > 11 || seleccion < 1) {
+                System.out.println("Introduce los numerod dentro del rango 1 - 11");
+                return imprimirMenu();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Introduzca solo digitos");
+            return imprimirMenu(); // llamada recursiva
+        } catch (Exception e) {
+            System.out.println("Algo salio mal introduzca la opcion de nuevo");
+            return imprimirMenu(); // llamada recursiva
+        }
+        return seleccion;
+
     }
 
     public static String SolicitarFrase() {
@@ -60,7 +103,7 @@ class Ejercicios {
         return lineas;
     }
 
-    public int numeroDePalabrasConUnSoloEspacio() {
+    public int numeroDePalabrasSinValidar() {
         String[] palabras = this.frase.split(" ");
         System.out.println("Numero de palabras (Asumiendo que la frase este \"bien escrita\"): " + palabras.length);
         return palabras.length;
@@ -98,7 +141,7 @@ class Ejercicios {
         int repeticiones = 0;
         while (true) {
             indexInicial = frase.indexOf(palabraRepetida, indexInicial);
-            if (indexInicial == -1){
+            if (indexInicial == -1) {
                 break;
             }
             repeticiones++;
@@ -109,27 +152,39 @@ class Ejercicios {
         return repeticiones;
     }
 
-    public void convertirMallusculas(){
+    public void convertirMallusculas() {
         List<String> palabrasCapitalizadas = new ArrayList<String>();
-        for (String palabra : this.palabras){
-            String letraCapitalizada =  "" + Character.toUpperCase(palabra.charAt(0));
+        for (String palabra : this.palabras) {
+            String letraCapitalizada = "" + Character.toUpperCase(palabra.charAt(0));
             String palabraCapitalizada = new StringBuilder(palabra)
-                .replace(0, 1, letraCapitalizada)
-                .toString();
+                    .replace(0, 1, letraCapitalizada)
+                    .toString();
             palabrasCapitalizadas.add(palabraCapitalizada);
         }
         this.palabrasCapitalizadas = palabrasCapitalizadas.toArray(new String[0]);
     }
 
-    public void ordenarAlfabeticamente(){
+    public void ordenarAlfabeticamente() {
         this.ordenAlfabetico = this.palabras;
         Arrays.sort(this.ordenAlfabetico);
         System.out.println("Orden alfabetico: " + Arrays.toString(this.ordenAlfabetico));
     }
 
-    public void ordenarAlfabeticamenteInvertido(){
+    public void ordenarAlfabeticamenteInvertido() {
         this.ordenAlfabeticoInvertido = this.palabras;
         Arrays.sort(this.ordenAlfabeticoInvertido, Comparator.<String>reverseOrder());
         System.out.println("Orden alfabetico invertido: " + Arrays.toString(this.ordenAlfabeticoInvertido));
+    }
+
+    public boolean comprobarFecha(){
+        return true;
+    }
+
+    public boolean comprobarMatricula(){
+        return true;
+    }
+
+    public boolean comprobarEmail(){
+        return true;
     }
 }
