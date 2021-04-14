@@ -1,6 +1,6 @@
 package org.example;
 
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 /**
@@ -16,14 +16,31 @@ public class Main {
 
     public static void menu(Ejercicios tarea) {
         int opcion = imprimirMenu();
-        switch (opcion){
-            case 1: tarea.calcularLineas(); break;
-            case 2: tarea.numeroDePalabras(); break;
-            case 3: tarea.numeroDePalabrasSinValidar(); break;
-            case 4: tarea.numeroDePalabras(); break;
-            case 5: tarea.mostrarPalabras(); break;
-            case 6: tarea.numeroDeRepeticiones("asdf"); break;
-            case 7: tarea.convertirMallusculas(); break;
+        switch (opcion) {
+            case 1:
+                tarea.calcularLineas().imprimirResultado();
+                break;
+            case 2:
+                tarea.numeroDePalabrasSinValidar().imprimirResultado();
+                break;
+            case 3:
+                tarea.numeroDePalabras().imprimirResultado();
+                break;
+            case 4:
+                tarea.mostrarPalabras().imprimirResultado();
+                break;
+            case 5:
+                tarea.numeroDeRepeticiones("asdf").imprimirResultado();
+                break;
+            case 6:
+                tarea.convertirMallusculas().imprimirResultado();
+                break;
+            case 7:
+                tarea.ordenarAlfabeticamente().imprimirResultado();
+                break;
+            case 8:
+                tarea.ordenarAlfabeticamenteInvertido().imprimirResultado();
+                break;
         }
 
         menu(tarea); //otra llamada recursiva
@@ -81,6 +98,31 @@ public class Main {
 }
 
 
+class Resultado {
+    private String mensaje;
+    private String[] palabras;
+
+    public Resultado(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public Resultado(String mensaje, String[] palabras) {
+        this(mensaje);
+        this.palabras = palabras;
+    }
+
+    public void imprimirResultado() {
+        StringBuilder output = new StringBuilder(this.mensaje + " \n");
+        if (this.palabras != null) {
+            for (String palabra : this.palabras) {
+                output.append("        * " + palabra + "\n");
+            }
+        }
+        System.out.println(output);
+    }
+}
+
+
 class Ejercicios {
     private String frase;
     private String[] palabras;
@@ -92,24 +134,25 @@ class Ejercicios {
         this.frase = frase;
     }
 
-    public int calcularLineas() {
+    public Resultado calcularLineas() {
         int lineas = (int) (this.frase.length() / 80);
 
         if (lineas == 0) {
             lineas = 1;
         }
 
-        System.out.println("Numbero de lineas: " + lineas);
-        return lineas;
+        String resultado = "Numbero de lineas: " + lineas;
+
+        return new Resultado(resultado);
     }
 
-    public int numeroDePalabrasSinValidar() {
+    public Resultado numeroDePalabrasSinValidar() {
         String[] palabras = this.frase.split(" ");
-        System.out.println("Numero de palabras (Asumiendo que la frase este \"bien escrita\"): " + palabras.length);
-        return palabras.length;
+        String resultado = "Numero de palabras (Asumiendo que la frase este \"bien escrita\"): " + palabras.length;
+        return new Resultado(resultado);
     }
 
-    public int numeroDePalabras() {
+    public Resultado numeroDePalabras() {
         String[] palabras = this.frase.split(" ");
         int NumeroPalabras = 0;
         for (String palabra : palabras) {
@@ -117,25 +160,23 @@ class Ejercicios {
                 NumeroPalabras += 1;
             }
         }
-        System.out.println("Numero de palabras: " + NumeroPalabras);
-
-        return NumeroPalabras;
+        String resultado = "Numero de palabras: " + NumeroPalabras;
+        return new Resultado(resultado);
     }
 
-    public String[] mostrarPalabras() {
+    public Resultado mostrarPalabras() {
         List<String> palabrasIndividuales = new ArrayList<>();
         String[] palabras = this.frase.split(" ");
         for (String palabra : palabras) {
             if (!palabra.equals("")) {
                 palabrasIndividuales.add(palabra);
-                System.out.println("Palabra -----> " + palabra);
             }
         }
         this.palabras = palabrasIndividuales.toArray(new String[0]);
-        return this.palabras;
+        return new Resultado("  ---> Palabras en la frase:", palabrasIndividuales.toArray(new String[0]));
     }
 
-    public int numeroDeRepeticiones(String palabraRepetida) {
+    public Resultado numeroDeRepeticiones(String palabraRepetida) {
         StringBuilder frase = new StringBuilder(this.frase);
         int indexInicial = 0;
         int repeticiones = 0;
@@ -147,12 +188,14 @@ class Ejercicios {
             repeticiones++;
             indexInicial++;
         }
-        System.out.println("Repeticiones de la palabra " + palabraRepetida + ": " + repeticiones);
-
-        return repeticiones;
+        String resultado = "Repeticiones de la palabra " + palabraRepetida + ": " + repeticiones;
+        return new Resultado(resultado);
     }
 
-    public void convertirMallusculas() {
+    public Resultado convertirMallusculas() {
+        if ((this).palabras == null){
+            mostrarPalabras();
+        }
         List<String> palabrasCapitalizadas = new ArrayList<String>();
         for (String palabra : this.palabras) {
             String letraCapitalizada = "" + Character.toUpperCase(palabra.charAt(0));
@@ -162,29 +205,34 @@ class Ejercicios {
             palabrasCapitalizadas.add(palabraCapitalizada);
         }
         this.palabrasCapitalizadas = palabrasCapitalizadas.toArray(new String[0]);
+        return new Resultado("  ---> Palabras capitalizadas", this.palabrasCapitalizadas);
     }
 
-    public void ordenarAlfabeticamente() {
+    public Resultado ordenarAlfabeticamente() {
+        if ((this).palabras == null){
+            mostrarPalabras();
+        }
         this.ordenAlfabetico = this.palabras;
         Arrays.sort(this.ordenAlfabetico);
-        System.out.println("Orden alfabetico: " + Arrays.toString(this.ordenAlfabetico));
+        return new Resultado("   ---> Orden alfabetico", this.ordenAlfabetico);
     }
 
-    public void ordenarAlfabeticamenteInvertido() {
+    public Resultado ordenarAlfabeticamenteInvertido() {
         this.ordenAlfabeticoInvertido = this.palabras;
         Arrays.sort(this.ordenAlfabeticoInvertido, Comparator.<String>reverseOrder());
-        System.out.println("Orden alfabetico invertido: " + Arrays.toString(this.ordenAlfabeticoInvertido));
+        return new Resultado("   ---> Orden alfabetico invertido", this.ordenAlfabeticoInvertido);
     }
 
-    public boolean comprobarFecha(){
+    public boolean comprobarFecha() {
         return true;
     }
 
-    public boolean comprobarMatricula(){
+    public boolean comprobarMatricula() {
         return true;
     }
 
-    public boolean comprobarEmail(){
+    public boolean comprobarEmail() {
         return true;
     }
 }
+
