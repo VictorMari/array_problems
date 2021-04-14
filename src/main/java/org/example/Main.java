@@ -37,9 +37,16 @@ public class Main {
                 break;
             case 7:
                 tarea.ordenarAlfabeticamente().imprimirResultado();
+                tarea.ordenarAlfabeticamenteInvertido().imprimirResultado();
                 break;
             case 8:
-                tarea.ordenarAlfabeticamenteInvertido().imprimirResultado();
+                tarea.comprobarFecha().imprimirResultado();
+                break;
+            case 9:
+                tarea.comprobarMatricula().imprimirResultado();
+                break;
+            case 10:
+                tarea.comprobarEmail().imprimirResultado();
                 break;
         }
 
@@ -193,7 +200,7 @@ class Ejercicios {
     }
 
     public Resultado convertirMallusculas() {
-        if ((this).palabras == null){
+        if ((this).palabras == null) {
             mostrarPalabras();
         }
         List<String> palabrasCapitalizadas = new ArrayList<String>();
@@ -209,7 +216,7 @@ class Ejercicios {
     }
 
     public Resultado ordenarAlfabeticamente() {
-        if ((this).palabras == null){
+        if ((this).palabras == null) {
             mostrarPalabras();
         }
         this.ordenAlfabetico = this.palabras;
@@ -223,16 +230,22 @@ class Ejercicios {
         return new Resultado("   ---> Orden alfabetico invertido", this.ordenAlfabeticoInvertido);
     }
 
-    public boolean comprobarFecha() {
-        return true;
+    public Resultado comprobarFecha() {
+        boolean fecha = this.frase.matches(".*[0-9][0-9]/[0-9][0-9]/[0-9][0-9][0-9][0-9].*");
+        String mensaje = fecha ? "La frase contiene una fecha": "La frase no contiene ninguna fecha";
+        return new Resultado(mensaje);
     }
 
-    public boolean comprobarMatricula() {
-        return true;
+    public Resultado comprobarMatricula() {
+        boolean matricula = this.frase.toLowerCase().matches(".*[0-9][0-9][0-9][0-9][a-z][a-z][a-z].*");
+        String mensaje = matricula ? "La frase contiene una matricual" : "La frase no contiene ninguna matricula";
+        return new Resultado(mensaje);
     }
 
-    public boolean comprobarEmail() {
-        return true;
+    public Resultado comprobarEmail() {
+        boolean email = this.frase.toLowerCase().contains("@");
+        String mensaje = email ? "La frase contiene un email": "La frase no contiene ningun email";
+        return new Resultado(mensaje);
     }
 }
 
