@@ -1,22 +1,69 @@
 package org.example;
 import java.io.FileOutputStream;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Random;
-
+import java.util.Scanner;
 
 
 public class GestionArrays {
     public static void main(String[] args) {
-        Punto[][] imagen = generarImagen();
-        imprimirImage(imagen);
+        //Punto[][] imagen = generarImagen();
+        //imprimirImage(imagen);
+        int[] numsBurbuja = solicitarArray();
+        ordenamientoDirecto(numsBurbuja);
+        ordenamientoDirecto(numsBurbuja);
+        System.out.println(Arrays.toString(numsBurbuja));
+    }
+
+    public static int pedirDato(){
+        Scanner in = new Scanner(System.in);
+        try{
+            return in.nextInt();
+        }
+        catch (InputMismatchException e){
+            System.out.println("Solo se permiten numeros");
+            return pedirDato();
+        }
+        catch (Exception e){
+            System.out.println("No se pudo leer. Vuelve a introducir el dato");
+            return pedirDato();
+        }
+
+    }
+
+    public static int[] solicitarArray(){
+        int[] numeros = new int[10];
+        System.out.println("Introduce " + numeros.length + " numeros para ordenar");
+        for (int i = 0; i < numeros.length; i++){
+            numeros[i] = pedirDato();
+        }
+        return numeros;
     }
 
     public static void ordenamientoBurbuja(int[] datos){
-
+        for (int i = 1; i < datos.length; i++){
+            for (int j = 0; j < datos.length - i; j++){
+                if (datos[j] > datos[j + 1]){
+                    // algoritmo para intercabiar el valor de dos variables.
+                    int temp = datos[j];
+                    datos[j] = datos[j + 1];
+                    datos[j + 1] = temp;
+                }
+            }
+        }
     }
 
     public static void ordenamientoDirecto(int[] datos){
-
+        for (int i = 0; i < datos.length - 1; i++){
+            for (int j = i + 1; j < datos.length; j++){
+                if(datos[j] < datos[i]){
+                    int temp  = datos[i];
+                    datos[i] = datos[j];
+                    datos[j] = temp;
+                }
+            }
+        }
     }
 
     public static void imprimirImage(Punto[][] imagen){
